@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-latest]
         build_type: [RelWithDebInfo, Debug]
         enable_ui: [off]
         include:
@@ -52,6 +52,11 @@ jobs:
       shell: bash
       run: |
         cd build && ninja
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: |
     - name: Running C++ Tests
       shell: bash
       run: |
