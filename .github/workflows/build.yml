@@ -58,28 +58,5 @@ jobs:
         name: artifacts
         path: |
           build/bin
-    - name: Running C++ Tests
-      shell: bash
-      run: |
-        if [[ "${{ runner.os }}" == "Linux" ]] ; then
-          export XVFB=xvfb-run
-        fi
-        cd build && $XVFB ctest --output-on-failure
-    - name: Running CLI Tests
-      shell: bash
-      run: |
-        if [[ "${{ runner.os }}" == "Linux" ]] ; then
-          export XVFB=xvfb-run
-        fi
-        if [[ "${{ github.base_ref }}" == "beta" ]] || [[ "${{ github.ref }}" == "refs/heads/beta" ]] ; then
-          export TESTS_BRANCH=beta
-        else
-          export TESTS_BRANCH=main
-        fi
-        cd build
-        export ASEPRITE=$PWD/bin/aseprite
-        git clone --branch $TESTS_BRANCH --recursive https://github.com/aseprite/tests.git
-        cd tests
-        $XVFB bash run-tests.sh
     - name: Download all workflow run artifacts
       uses: actions/download-artifact@v3
