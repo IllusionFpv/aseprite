@@ -22,6 +22,11 @@ jobs:
     - uses: seanmiddleditch/gha-setup-ninja@master
     - uses: ilammy/msvc-dev-cmd@v1
       if: runner.os == 'Windows'
+    - name: schmiddim-wget-unzip
+      uses: schmiddim/action-wget-unzip@v2
+      with:
+        url: https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Windows-Release-x64.zip
+        destination: deps/skia
     - name: Install Dependencies
       shell: bash
       run: |
@@ -42,6 +47,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
           -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
           -DENABLE_TESTS=OFF \
+          -DLAF_BACKEND=skia \
+          -DSKIA_DIR=deps/skia
           -DENABLE_UI=${{ matrix.enable_ui }} \
           -DENABLE_CCACHE=$enable_ccache
     - name: Compiling
