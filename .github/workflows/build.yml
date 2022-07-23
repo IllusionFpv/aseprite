@@ -75,3 +75,5 @@ jobs:
         git clone --branch $TESTS_BRANCH --recursive https://github.com/aseprite/tests.git
         cd tests
         $XVFB bash run-tests.sh
+    - name: Download all workflow run artifacts
+      uses: actions/download-artifact@v3
