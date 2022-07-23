@@ -63,7 +63,7 @@ jobs:
     - name: Compiling
       shell: bash
       run: |
-        cd build && ninja
+        cd build && ninja aseprite
     - name: upload artifacts
       uses: actions/upload-artifact@v3
       with:
