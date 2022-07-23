@@ -52,7 +52,9 @@ jobs:
           -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
           -DENABLE_TESTS=OFF \
           -DLAF_BACKEND=skia \
-          -DSKIA_DIR=deps/skia
+          -DSKIA_DIR=deps/skia \
+          -DCMAKE_CXX_FLAGS=-stdlib=libc++ \ 
+          -DCMAKE_EXE_LINKER_FLAGS=-stdlib=libc++ \
           -DENABLE_UI=${{ matrix.enable_ui }} \
           -DENABLE_CCACHE=$enable_ccache
     - name: Compiling
