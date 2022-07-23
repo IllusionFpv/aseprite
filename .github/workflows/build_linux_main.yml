@@ -26,11 +26,10 @@ jobs:
       shell: bash
       run: |
         mkdir -p deps/skia
-    - name: schmiddim-wget-unzip
-      uses: schmiddim/action-wget-unzip@v2
-      with:
-        url: 'https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Linux-Release-x64.zip'
-        destination: deps/skia
+    - name: download and unzip
+      shell: bash
+      run: |
+        wget 'https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Linux-Release-x64.zip' && unzip Skia-Linux-Release-x64.zip .
     - name: Install Dependencies
       shell: bash
       run: |
