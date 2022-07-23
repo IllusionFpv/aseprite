@@ -29,6 +29,7 @@ jobs:
     - name: download and unzip
       shell: bash
       run: |
+        cd deps/skia
         wget 'https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Linux-Release-x64.zip' && unzip Skia-Linux-Release-x64.zip
     - name: Install Dependencies
       shell: bash
