@@ -26,8 +26,12 @@ jobs:
       shell: bash
       run: |
         mkdir -p deps/skia/out/Release-x64
-    - name: Github Action for wget
-      uses: wei/wget@v1.1.1
+    - name: Download & Extract
+      uses: gamedev-thingy/Download-Extract@done
+      with:
+        url: 'https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Windows-Release-x64.zip'
+        destination: deps/skia/out/Release-x64
+        ZIPname: Skia-Windows-Release-x64.zip
     - name: download-skia
       shell: bash
       run: |
