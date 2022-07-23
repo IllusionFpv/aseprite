@@ -25,7 +25,7 @@ jobs:
     - name: mkdir
       shell: bash
       run: |
-        mkdir deps/skia
+        mkdir ./deps/skia
     - name: schmiddim-wget-unzip
       uses: schmiddim/action-wget-unzip@v2
       with:
