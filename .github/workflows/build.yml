@@ -57,6 +57,7 @@ jobs:
       with:
         name: artifacts
         path: |
+          build
     - name: Running C++ Tests
       shell: bash
       run: |
