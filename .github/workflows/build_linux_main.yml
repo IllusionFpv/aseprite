@@ -22,6 +22,10 @@ jobs:
     - uses: seanmiddleditch/gha-setup-ninja@master
     - uses: ilammy/msvc-dev-cmd@v1
       if: runner.os == 'Windows'
+    - name: mkdir
+      shell: bash
+      run: |
+        mkdir deps/skia
     - name: schmiddim-wget-unzip
       uses: schmiddim/action-wget-unzip@v2
       with:
