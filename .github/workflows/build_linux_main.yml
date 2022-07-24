@@ -1,0 +1,74 @@
+name: build linux
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        build_type: [RelWithDebInfo]
+        enable_ui: [on]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1
+      if: runner.os == 'Linux'
+      with:
+        key: ${{ matrix.os }}-${{ matrix.enable_ui }}
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - uses: ilammy/msvc-dev-cmd@v1
+      if: runner.os == 'Windows'
+    - name: Create folder
+      shell: bash
+      run: |
+        mkdir -p deps/skia
+    - name: download and unzip
+      shell: bash
+      run: |
+        cd deps/skia
+        wget 'https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-Linux-Release-x64.zip' && unzip Skia-Linux-Release-x64.zip
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        if [[ "${{ runner.os }}" == "Linux" ]] ; then
+          sudo apt-get update -qq
+          sudo apt-get install -y \
+            libx11-dev libxcursor-dev libxi-dev g++ clang-10 libc++-10-dev libc++abi-10-dev cmake ninja-build libxcursor-dev libgl1-mesa-dev libfontconfig1-dev
+        fi
+    - name: Generating Makefiles
+      shell: bash
+      run: |
+        if [[ "${{ runner.os }}" == "Windows" ]] ; then
+          export enable_ccache=off
+        else
+          export enable_ccache=on
+        fi
+        export CC=clang
+        export CXX=clang++
+        cmake -S . -B build -G Ninja \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+          -DENABLE_TESTS=OFF \
+          -DCMAKE_CXX_FLAGS:STRING=-stdlib=libc++ \
+          -DCMAKE_EXE_LINKER_FLAGS:STRING=-stdlib=libc++ \
+          -DLAF_BACKEND=skia \
+          -DSKIA_DIR=deps/skia \
+          -DSKIA_LIBRARY_DIR=deps/skia/out/Release-x64 \
+          -DSKIA_LIBRARY=deps/skia/out/Release-x64/libskia.a \
+          -DENABLE_UI=${{ matrix.enable_ui }} \
+          -DENABLE_CCACHE=$enable_ccache
+    - name: Compiling
+      shell: bash
+      run: |
+        cd build && ninja
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: |
+          build/bin
+    - name: Download all workflow run artifacts
+      uses: actions/download-artifact@v3
