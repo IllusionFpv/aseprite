@@ -56,6 +56,7 @@ jobs:
           -DCMAKE_EXE_LINKER_FLAGS:STRING=-stdlib=libc++ \
           -DLAF_BACKEND=skia \
           -DSKIA_DIR=deps/skia \
+          -DUSE_SHARED_TINYXML=ON \
           -DSKIA_LIBRARY_DIR=deps/skia/out/Release-x64 \
           -DSKIA_LIBRARY=deps/skia/out/Release-x64/libskia.a \
           -DENABLE_UI=${{ matrix.enable_ui }} \
